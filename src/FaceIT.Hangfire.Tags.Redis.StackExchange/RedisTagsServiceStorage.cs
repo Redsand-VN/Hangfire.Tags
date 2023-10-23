@@ -202,7 +202,8 @@ namespace Hangfire.Tags.Redis.StackExchange
                 var stateValues = new SafeDictionary<string, string>(
                     redis.HashGetAll(GetRedisKey($"job:{i}:state")).ToStringDictionary(),
                     StringComparer.OrdinalIgnoreCase);
-
+               if(!values.Any() || !stateValues.Any())
+                    return null;
                 return new RedisJob
                 {
                     Id = Guid.Parse(i),
@@ -214,7 +215,9 @@ namespace Hangfire.Tags.Redis.StackExchange
                         new InvocationData(values["Type"], values["Method"], values["ParameterTypes"],
                             values["Arguments"]).SerializePayload(true)
                 };
-            }).ToList();
+            })
+            .Where(j => j != null)
+            .ToList();
 
             return DeserializeJobs(redisJobs, selector);
         }
