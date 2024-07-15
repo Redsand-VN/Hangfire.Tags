@@ -8,24 +8,24 @@ using Hangfire.Tags.Support;
 
 namespace Hangfire.Tags
 {
-   /// <summary>
-   /// Provides extension methods to setup Hangfire.Tags
-   /// </summary>
-   public static class GlobalConfigurationExtensions
-   {
-      /// <summary>
-      /// Configures Hangfire to use Tags.
-      /// </summary>
-      /// <param name="configuration">Global configuration</param>
-      /// <param name="options">Options for tags</param>
-      /// <exception cref="ArgumentNullException"></exception>
-      /// <exception cref="ArgumentException"></exception>
-      /// <exception cref="InvalidOperationException"></exception>
-      /// <returns></returns>
-      public static IGlobalConfiguration UseTags(this IGlobalConfiguration configuration, TagsOptions options = null)
-      {
-         if (configuration == null)
-            throw new ArgumentNullException(nameof(configuration));
+    /// <summary>
+    /// Provides extension methods to setup FaceIT.Hangfire.Tags
+    /// </summary>
+    public static class GlobalConfigurationExtensions
+    {
+        /// <summary>
+        /// Configures Hangfire to use Tags.
+        /// </summary>
+        /// <param name="configuration">Global configuration</param>
+        /// <param name="options">Options for tags</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <returns></returns>
+        public static IGlobalConfiguration UseTags(this IGlobalConfiguration configuration, TagsOptions options = null)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
          if (DashboardRoutes.Routes.FindDispatcher("/tags/(.*)") != null)
             throw new InvalidOperationException("Tags are already initialized");
@@ -48,15 +48,27 @@ namespace Hangfire.Tags
 
          var assembly = typeof(GlobalConfigurationExtensions).Assembly;
 
-         var jsPath = DashboardRoutes.Routes.Contains("/js[0-9]+") ? "/js[0-9]+" : "/js[0-9]{3}";
-         DashboardRoutes.Routes.Append(jsPath, new EmbeddedResourceDispatcher(assembly, "Hangfire.Tags.Resources.jquery.tagcloud.js"));
-         DashboardRoutes.Routes.Append(jsPath, new EmbeddedResourceDispatcher(assembly, "Hangfire.Tags.Resources.script.js"));
+            var jsPath = DashboardRoutes.Routes.Contains("/js[0-9]+") ? "/js[0-9]+" : "/js[0-9]{3}";
+            DashboardRoutes.Routes.Append(jsPath,
+                new EmbeddedResourceDispatcher(assembly,
+                    new[]
+                    {
+                        new Resource("Hangfire.Tags.Resources.jquery.tagcloud.js", false),
+                        new Resource("Hangfire.Tags.Resources.script.js", false)
+                    }));
 
-         var cssPath = DashboardRoutes.Routes.Contains("/css[0-9]+") ? "/css[0-9]+" : "/css[0-9]{3}";
-         DashboardRoutes.Routes.Append(cssPath, new EmbeddedResourceDispatcher(assembly, "Hangfire.Tags.Resources.style.css"));
-         DashboardRoutes.Routes.Append(cssPath, new DynamicCssDispatcher(options));
-         return configuration;
-      }
+            var cssPath = DashboardRoutes.Routes.Contains("/css[0-9]+") ? "/css[0-9]+" : "/css[0-9]{3}";
+            DashboardRoutes.Routes.Append(cssPath,
+                new EmbeddedResourceDispatcher(assembly,
+                    new[]
+                    {
+                        new Resource("Hangfire.Tags.Resources.style.css", false),
+                        new Resource("Hangfire.Tags.Resources.style-{0}.css", true)
+                    }));
+            
+            DashboardRoutes.Routes.Append(cssPath, new DynamicCssDispatcher(options));
+            return configuration;
+        }
 
       private static MenuItem TagsMenuItemInitializer(RazorPage page)
       {

@@ -1,14 +1,14 @@
 # Hangfire.Tags
 
-[![Build status](https://ci.appveyor.com/api/projects/status/hqrtav24894dtjcp/branch/master?svg=true)](https://ci.appveyor.com/project/faceit/hangfire-tags/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/hqrtav24894dtjcp/branch/main?svg=true)](https://ci.appveyor.com/project/faceit/hangfire-tags/branch/main)
 [![NuGet](https://img.shields.io/nuget/v/FaceIT.Hangfire.Tags.svg)](https://www.nuget.org/packages/FaceIT.Hangfire.Tags/)
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HYKKSJL8B7XE4&currency_code=EUR&source=url)
 
 Inspired by the lack of searching and grouping, Hangfire.Tags provides a way to search and group different jobs. 
 
-![sidemenu](https://raw.githubusercontent.com/face-it/Hangfire.Tags/master/Sidemenu.png)
-![dashboard](https://raw.githubusercontent.com/face-it/Hangfire.Tags/master/Dashboard.png)
+![sidemenu](https://raw.githubusercontent.com/face-it/Hangfire.Tags/main/Sidemenu-dark.png)
+![dashboard](https://raw.githubusercontent.com/face-it/Hangfire.Tags/main/Dashboard.png)
 
 ## Contributers
 
@@ -24,6 +24,7 @@ Inspired by the lack of searching and grouping, Hangfire.Tags provides a way to 
 - **Filtering**: allows filtering of tags based on tags and states, this makes it easy to requeue failed jobs with a certain tag.
 - **Searching**: allows you to search for tags
 - **Storages**: has an storage for SQL Server, MySql, PostgreSql and initial Redis support
+- **Dark and light mode**: supports the new dark and light mode support of Hangfire
 
 ## Setup
 
@@ -82,9 +83,10 @@ As usual, you may provide additional options for `UseTags()` method.
 
 Here's what you can configure:
 
-- **BackgroundColor** - default background color for the tags
-- **TextColor** - default text color of the tags
-- **Tags interface** - you can specify an autocomplete tags search (Yong Liu).
+- **TagColor**/**DarkTagColor** - default background color for the tags
+- **TextColor**/**TextColor** - default text color of the tags
+- **Tags interface** - you can specify an autocomplete tags search (Yong Liu)
+- **MaxLength** - the maximum length of the tags, automatically set to 100 for SQL Server
 
 **NOTE**: After you initially add Hangfire.Tags (or change the options above) you may need to clear browser cache, as generated CSS/JS can be cached by browser.
 
@@ -135,7 +137,7 @@ config.UseTagsWithSql(options);
 ```
 
 The result will look like this:
-![tagsearch](https://raw.githubusercontent.com/face-it/Hangfire.Tags/master/Tagsearch.png)
+![tagsearch](https://raw.githubusercontent.com/face-it/Hangfire.Tags/main/Tagsearch.png)
 
 ## License
 
